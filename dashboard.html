@@ -1,0 +1,118 @@
+ <!--Sebas-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
+    <title>UMB Salones</title> <!-- Título del dashboard -->
+    <link rel="stylesheet" href="styles.css"> <!-- Estilos CSS -->
+</head>
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Encabezado/Header de la aplicación -->
+        <header class="app-header">
+            <!-- Título principal del sistema -->
+            <h1>UMB Salones</h1>
+            <!-- Botón de notificaciones en el header -->
+            <a href="notifications.html" class="btn-icon">
+                <!-- Icono de campana/notificaciones -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'/%3E%3C/svg%3E" alt="Notificaciones" class="icon">
+            </a>
+        </header>
+
+        <!-- Contenido principal del dashboard -->
+        <main class="main-content">
+            <!-- Grid de acciones principales -->
+            <div class="dashboard-grid">
+                <!-- Tarjeta para crear nueva reserva -->
+                <div class="card">
+                    <!-- Encabezado de la tarjeta -->
+                    <div class="card-header">
+                        <h3>Reservar Salón</h3>
+                    </div>
+                    <!-- Contenido de la tarjeta -->
+                    <div class="card-content">
+                        <!-- Descripción de la funcionalidad -->
+                        <p>Solicita un salón para tus actividades académicas</p>
+                        <!-- Botón principal de acción -->
+                        <a href="reserve.html" class="btn btn-primary btn-full">
+                            <!-- Icono de más/agregar -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 4v16m8-8H4'/%3E%3C/svg%3E" alt="Agregar" class="icon">
+                            Nueva Reserva
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta para ver reservas existentes -->
+                <div class="card">
+                    <!-- Encabezado de la tarjeta -->
+                    <div class="card-header">
+                        <h3>Mis Reservas</h3>
+                    </div>
+                    <!-- Contenido de la tarjeta -->
+                    <div class="card-content">
+                        <!-- Descripción de la funcionalidad -->
+                        <p>Gestiona tus reservas activas</p>
+                        <!-- Botón secundario de acción -->
+                        <a href="my-reservations.html" class="btn btn-outline btn-full">
+                            Ver Reservas
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de reservas recientes -->
+            <div class="card">
+                <!-- Encabezado de la sección -->
+                <div class="card-header">
+                    <h3>Reservas Recientes</h3>
+                </div>
+                <!-- Lista de reservas -->
+                <div class="card-content">
+                    <!-- Reserva confirmada -->
+                    <div class="reservation-item confirmed">
+                        <!-- Información de la reserva -->
+                        <div class="reservation-info">
+                            <h4>Salón 301</h4> <!-- Nombre del salón -->
+                            <p>15 Mar 2025 • 2:00 PM</p> <!-- Fecha y hora -->
+                        </div>
+                        <!-- Badge de estado confirmado -->
+                        <span class="status-badge status-confirmed">Confirmada</span>
+                    </div>
+                    <!-- Reserva pendiente -->
+                    <div class="reservation-item pending">
+                        <!-- Información de la reserva -->
+                        <div class="reservation-info">
+                            <h4>Salón 405</h4> <!-- Nombre del salón -->
+                            <p>17 Mar 2025 • 10:00 AM</p> <!-- Fecha y hora -->
+                        </div>
+                        <!-- Badge de estado pendiente -->
+                        <span class="status-badge status-pending">Pendiente</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Navegación inferior fija -->
+        <nav class="bottom-nav">
+            <!-- Enlace a dashboard (activo) -->
+            <a href="dashboard.html" class="nav-item active">
+                <!-- Icono de casa/home -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'/%3E%3C/svg%3E" alt="Inicio" class="icon">
+            </a>
+            <!-- Enlace a mis reservas -->
+            <a href="my-reservations.html" class="nav-item">
+                <!-- Icono de calendario -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E" alt="Reservas" class="icon">
+            </a>
+            <!-- Enlace a perfil -->
+            <a href="profile.html" class="nav-item">
+                <!-- Icono de usuario -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/%3E%3C/svg%3E" alt="Perfil" class="icon">
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

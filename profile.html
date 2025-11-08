@@ -1,0 +1,133 @@
+<!--Sebas-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
+    <title>Perfil - UMB</title> <!-- Título de la página -->
+    <link rel="stylesheet" href="styles.css"> <!-- Estilos CSS -->
+</head>
+
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Header con navegación -->
+        <header class="app-header">
+            <!-- Botón para regresar al dashboard -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de flecha hacia atrás -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E"
+                    alt="Volver" class="icon">
+            </a>
+            <!-- Título de la página -->
+            <h1>Perfil</h1>
+            <!-- Botón de configuración -->
+            <a href="configuration.html" class="btn-icon" title="Configuración">
+                <!-- Icono de configuración -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E"
+                    alt="Configuración" class="icon">
+            </a>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Tarjeta con información del perfil -->
+            <div class="card">
+                <div class="card-content">
+                    <!-- Header del perfil con avatar e información -->
+                    <div class="profile-header">
+                        <!-- Avatar del usuario -->
+                        <div class="profile-avatar">
+                            <!-- Icono de usuario -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/%3E%3C/svg%3E"
+                                alt="Usuario" class="icon">
+                        </div>
+                        <!-- Información del usuario -->
+                        <div class="profile-info">
+                            <h2>Usuario Academia</h2> <!-- Nombre del usuario -->
+                            <p>usuario@academia.umb.edu.co</p> <!-- Email del usuario -->
+                            <span class="profile-role">Profesor</span> <!-- Rol del usuario -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menú de opciones del perfil -->
+            <div class="profile-menu">
+                <!-- Opción: Mis Reservas -->
+                <div class="card">
+                    <div class="card-content">
+                        <a href="my-reservations.html" class="profile-menu-item">
+                            <!-- Icono con fondo azul -->
+                            <div class="menu-icon blue">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E"
+                                    alt="Calendario" class="icon">
+                            </div>
+                            <span>Mis Reservas</span> <!-- Texto de la opción -->
+                            <!-- Icono de flecha hacia la derecha -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'/%3E%3C/svg%3E"
+                                alt="Ir" class="icon">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Opción: Configuración -->
+                <div class="card">
+                    <div class="card-content">
+                        <a href="configuration.html" class="profile-menu-item">
+                            <!-- Icono con fondo verde -->
+                            <div class="menu-icon green">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E"
+                                    alt="Configuración" class="icon">
+                            </div>
+                            <span>Configuración</span> <!-- Texto de la opción -->
+                            <!-- Icono de flecha hacia la derecha -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'/%3E%3C/svg%3E"
+                                alt="Ir" class="icon">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Opción: Cerrar Sesión -->
+                <div class="card">
+                    <div class="card-content">
+                        <a href="index.html" class="profile-menu-item logout">
+                            <!-- Icono con fondo rojo -->
+                            <div class="menu-icon red">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'/%3E%3C/svg%3E"
+                                    alt="Salir" class="icon">
+                            </div>
+                            <span>Cerrar Sesión</span> <!-- Texto de la opción -->
+                            <!-- Icono de flecha hacia la derecha -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'/%3E%3C/svg%3E"
+                                alt="Ir" class="icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <!-- Enlace a dashboard -->
+            <a href="dashboard.html" class="nav-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'/%3E%3C/svg%3E"
+                    alt="Inicio" class="icon">
+            </a>
+            <!-- Enlace a mis reservas -->
+            <a href="my-reservations.html" class="nav-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E"
+                    alt="Reservas" class="icon">
+            </a>
+            <!-- Enlace a perfil (activo) -->
+            <a href="profile.html" class="nav-item active">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/%3E%3C/svg%3E"
+                    alt="Perfil" class="icon">
+            </a>
+        </nav>
+    </div>
+</body>
+
+</html>

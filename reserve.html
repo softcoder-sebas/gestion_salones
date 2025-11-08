@@ -1,0 +1,100 @@
+ <!--Sebas-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
+    <title>Reservar Salón - UMB</title> <!-- Título específico para reservas -->
+    <link rel="stylesheet" href="styles.css"> <!-- Estilos CSS -->
+</head>
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Header con navegación -->
+        <header class="app-header">
+            <!-- Botón para regresar al dashboard -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de flecha hacia atrás -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E" alt="Volver" class="icon">
+            </a>
+            <!-- Título de la página -->
+            <h1>Reservar Salón</h1>
+            <!-- Botón para cerrar/cancelar -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de X para cerrar -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'/%3E%3C/svg%3E" alt="Cerrar" class="icon">
+            </a>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Información del salón seleccionado -->
+            <div class="card">
+                <div class="card-header">
+                    <!-- Nombre del salón -->
+                    <h2>Salón 310</h2>
+                    <!-- Detalles del salón -->
+                    <div class="salon-details">
+                        <!-- Ubicación del salón -->
+                        <div class="detail-item">
+                            <!-- Icono de ubicación -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc2626'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E" alt="Ubicación" class="icon">
+                            <span>Bloque D - Piso 3</span>
+                        </div>
+                        <!-- Capacidad del salón -->
+                        <div class="detail-item">
+                            <!-- Icono de personas -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc2626'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z'/%3E%3C/svg%3E" alt="Capacidad" class="icon">
+                            <span>Capacidad: 30 personas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de reserva -->
+            <form class="reserve-form">
+                <!-- Fila con fecha y hora -->
+                <div class="form-row">
+                    <!-- Campo de fecha -->
+                    <div class="form-group">
+                        <label for="date">
+                            <!-- Icono de calendario -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E" alt="Fecha" class="icon">
+                            Fecha
+                        </label>
+                        <input type="date" id="date" value="2025-01-01" required>
+                    </div>
+                    <!-- Campo de hora -->
+                    <div class="form-group">
+                        <label for="time">
+                            <!-- Icono de reloj -->
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E" alt="Hora" class="icon">
+                            Hora
+                        </label>
+                        <input type="time" id="time" value="09:00" required>
+                    </div>
+                </div>
+
+                <!-- Indicador de disponibilidad -->
+                <div class="availability-status">
+                    <!-- Badge que muestra que el salón está disponible -->
+                    <span class="status-badge status-available">Disponible</span>
+                </div>
+
+                <!-- Campo para el motivo de la reserva -->
+                <div class="form-group">
+                    <label for="reason">Motivo de la reserva</label>
+                    <!-- Área de texto para descripción -->
+                    <textarea id="reason" placeholder="Ejemplo: Clase de Patrones y metodología de la construcción del software" maxlength="150" required></textarea>
+                    <!-- Indicador de límite de caracteres -->
+                    <small>Máximo 150 caracteres</small>
+                </div>
+
+                <!-- Botón para confirmar la reserva -->
+                <button type="submit" class="btn btn-primary btn-full">Confirmar Reserva</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

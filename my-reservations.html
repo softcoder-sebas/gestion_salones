@@ -1,0 +1,119 @@
+<!-- Julieth-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
+    <title>Reservar Salón - UMB</title> <!-- Título específico para reservas -->
+    <link rel="stylesheet" href="styles.css"> <!-- Estilos CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="js/reservas.js" defer></script>
+</head>
+
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Header con navegación -->
+        <header class="app-header">
+            <!-- Botón para regresar al dashboard -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de flecha hacia atrás -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E"
+                    alt="Volver" class="icon">
+            </a>
+            <!-- Título de la página -->
+            <h1>Mis Reservas</h1>
+            <!-- Botón para notificaciones -->
+            <a href="notifications.html" class="btn-icon">
+                <!-- Icono de notificaciones -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'/%3E%3C/svg%3E"
+                    alt="Notificaciones" class="icon">
+            </a>
+        </header>
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Contenedor con estilo de tarjeta -->
+            <div class="card">
+                <!-- Contenido interno de la tarjeta -->
+                <div class="card-content">
+                    <!-- Reserva confirmada -->
+                    <div class="reservation-itemReservation confirmed">
+                        <!-- Información de la reserva -->
+                        <div class="reservation-header">
+                            <div>
+                                <h3>Salón 301</h3><!-- Nombre del salón -->
+                                <div class="date-info">
+                                    <!-- Fecha y hora -->
+                                    <span class="day-badge">15</span>
+                                    <p>Mar 2025 • <i class="fas fa-clock"></i> 2:00 PM</p>
+                                </div>
+                            </div>
+                            <!-- Badge de estado confirmado -->
+                            <span class="status-badge status-confirmed">Confirmada</span>
+                        </div>
+                        <!-- Contenido de Botones -->
+                        <div class="reservation-actions">
+                            <!-- Botón de modificar reserva -->
+                            <a class="btn btn-outline" onclick="modificarReserva()">Modificar Reserva</a>
+                            <!-- Botón de cancelar reserva -->
+                            <a class="btn btn-primary" onclick="cancelarReserva()">Cancelar Reserva</a>
+                        </div>
+
+                    </div>
+
+                    <!-- Reserva pendiente -->
+                    <div class="reservation-itemReservation pending">
+                        <!-- Información de la reserva -->
+                        <div class="reservation-header">
+                            <div>
+                                <h3>Salón 405</h3><!-- Nombre del salón -->
+                                <div class="date-info">
+                                    <!-- Fecha y hora -->
+                                    <span class="day-badge">17</span>
+                                    <p>Mar 2025 • <i class="fas fa-clock"></i> 10:00 AM</p>
+                                </div>
+                            </div>
+                            <!-- Badge de estado confirmado -->
+                            <span class="status-badge status-pending">Pendiente</span>
+                        </div>
+                        <!-- Contenido de Botones -->
+                        <div class="reservation-actions">
+                            <!-- Botón de modificar reserva -->
+                            <a class="btn btn-outline" onclick="modificarReserva()">Modificar Reserva</a>
+                            <!-- Botón de cancelar reserva -->
+                            <a class="btn btn-primary" onclick="cancelarReserva()">Cancelar Reserva</a>
+                        </div>
+                    </div>
+
+                    <!-- Reserva cancelada -->
+                    <div class="reservation-itemReservation rejected">
+                        <!-- Información de la reserva -->
+                        <div class="reservation-header">
+                            <div>
+                                <h3>Salón 202</h3><!-- Nombre del salón -->
+                                <div class="date-info">
+                                    <!-- Fecha y hora -->
+                                    <span class="day-badge">28</span>
+                                    <p>Mar 2025 • <i class="fas fa-clock"></i> 12:00 PM</p>
+                                </div>
+                            </div>
+                            <!-- Badge de estado cancelado -->
+                            <span class="status-badge status-cancelled">Cancelado</span>
+                        </div>
+                        <!-- Contenido de Botones -->
+                        <div class="reservation-actions">
+                            <!-- Botón de ver detalles -->
+                            <a class="btn btn-outline" onclick="verDetallesReserva()">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

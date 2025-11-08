@@ -1,0 +1,66 @@
+<!--Sebas-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación de caracteres UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración responsive -->
+    <title>UMB - Préstamo de Salones</title> <!-- Título de la página -->
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace a los estilos CSS -->
+</head>
+
+<body class="login-page"> <!-- Clase específica para la página de login -->
+    <!-- Contenedor principal del login -->
+    <div class="login-container">
+        <!-- Tarjeta que contiene el formulario de login -->
+        <div class="login-card">
+            <!-- Encabezado con logo y títulos -->
+            <div class="login-header">
+                <!-- Contenedor del logo -->
+                <div class="logo">
+                    <!-- Círculo con las iniciales UMB -->
+                    <div class="logo-circle">UMB</div>
+                </div>
+                <!-- Título principal de bienvenida -->
+                <h1>Bienvenido a UMB</h1>
+                <!-- Subtítulo descriptivo del sistema -->
+                <p class="subtitle">Préstamo de Salones</p>
+            </div>
+
+            <!-- Formulario de inicio de sesión -->
+            <form class="login-form">
+                <!-- Grupo de campo para el correo electrónico -->
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label> <!-- Etiqueta del campo -->
+                    <input type="email" id="email" value="usuario@academia.umb.edu.co" required>
+                    <!-- Campo de entrada para email -->
+                </div>
+
+                <!-- Grupo de campo para la contraseña -->
+                <div class="form-group">
+                    <label for="password">Contraseña</label> <!-- Etiqueta del campo -->
+                    <input type="password" id="password" value="••••••••" required>
+                    <!-- Campo de entrada para contraseña -->
+                </div>
+
+                <!-- Botón principal de inicio de sesión (enlace al dashboard) -->
+                <a href="dashboard.html" class="btn btn-primary btn-full">Iniciar Sesión</a>
+
+                <!-- Enlaces de ayuda para el usuario -->
+                <div class="login-links">
+                    <!-- Enlace para recuperar contraseña olvidada -->
+                    <a href="forgot-password.html" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <!-- Enlace para registro de nuevos usuarios -->
+                <div class="register-link">
+                    <span>¿No tienes cuenta? </span>
+                    <a href="register.html">Regístrate</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

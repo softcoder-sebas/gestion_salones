@@ -1,0 +1,124 @@
+<!-- Julieth-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8"> <!-- Codificación UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive -->
+    <title>Notificaciones</title> <!-- Título específico para notificaciones -->
+    <link rel="stylesheet" href="styles.css"> <!-- Estilos CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Header con navegación -->
+        <header class="app-header">
+            <!-- Botón para regresar al dashboard -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de flecha hacia atrás -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E"
+                    alt="Volver" class="icon">
+            </a>
+            <!-- Título de la página -->
+            <h1>Notificaciones</h1>
+            <!-- Botón para cerrar/cancelar -->
+            <a href="dashboard.html" class="btn-icon">
+                <!-- Icono de X para cerrar -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'/%3E%3C/svg%3E"
+                    alt="Cerrar" class="icon">
+            </a>
+        </header>
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Contenido de Botones -->
+            <div class="notification-actions">
+                <!-- Botón de borrar notificaciones -->
+                <a class="btn btn-primary" onclick="borrarNotificaciones()">Borrar Todo</a>
+            </div>
+            <!-- Notificaciones -->
+            <div class="notification-item unread">
+                <div class="notification-content">
+                    <span class="notification-indicator success"></span>
+                    <div class="notification-text">
+                        <p><strong>Tu reserva del Salón 301 para el 15 de marzo a las 2:00 PM ha sido
+                                confirmada.</strong></p>
+                        <span class="notification-time">Hace 2 horas</span>
+                    </div>
+                </div>
+                <div class="notification-actions-inline">
+                    <!-- Botón de Marcar como leido -->
+                    <a class="btn btn-outline" onclick="alert('Marcar como leído')">
+                        <i class="fa-regular fa-eye"></i> Marcar leído
+                    </a>
+                    <!-- Botón de Eliminar -->
+                    <a class="btn btn-outline" onclick="alert('Eliminar notificación')">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-content">
+                    <span class="notification-indicator error"></span>
+                    <div class="notification-text">
+                        <p><strong>Tu solicitud para el Salón 202 fue rechazada. Razón: Conflicto de horario.</strong></p>
+                        <span class="notification-time">Hace 3 horas</span>
+                    </div>
+                </div>
+                <div class="notification-actions-inline">
+                    <!-- Botón de Marcar como leido -->
+                    <a class="btn btn-outline" onclick="alert('Marcar como leído')">
+                        <i class="fa-regular fa-eye"></i> Marcar leído
+                    </a>
+                    <!-- Botón de Eliminar -->
+                    <a class="btn btn-outline" onclick="alert('Eliminar notificación')">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+            <div class="notification-item read">
+                <div class="notification-content">
+                    <span class="notification-indicator info"></span>
+                    <div class="notification-text">
+                        <p><strong>Tienes una reserva pendiente por confirmar para el 17 de marzo en el Salón 405 a las
+                                10:00 AM.</strong></p>
+                        <span class="notification-time">Hace 5 horas</span>
+                    </div>
+                </div>
+                <div class="notification-actions-inline">
+                    <!-- Botón de Eliminar -->
+                    <a class="btn btn-outline" onclick="alert('Eliminar notificación')">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-content">
+                    <span class="notification-indicator warning"></span>
+                    <div class="notification-text">
+                        <p><strong>Mantenimiento en el Bloque A el 20 de marzo. Algunos salones estarán
+                                cerrados.</strong></p>
+                        <span class="notification-time">Hace 6 horas</span>
+                    </div>
+                </div>
+                <div class="notification-actions-inline">
+                    <!-- Botón de Marcar como leido -->
+                    <a class="btn btn-outline" onclick="alert('Marcar como leído')">
+                        <i class="fa-regular fa-eye"></i> Marcar leído
+                    </a>
+                    <!-- Botón de Eliminar -->
+                    <a class="btn btn-outline" onclick="alert('Eliminar notificación')">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+
+        </main>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
