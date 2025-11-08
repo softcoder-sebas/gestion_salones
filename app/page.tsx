@@ -1,16 +1,59 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import Link from "next/link"
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { useAuth } from '@/components/auth-provider'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("usuario@academia.umb.edu.co")
-  const [password, setPassword] = useState("••••••••")
+  const router = useRouter()
+  const { user, loading, refresh } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/dashboard')
+    }
+  }, [user, loading, router])
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSubmitting(true)
+    setError(null)
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (!response.ok) {
+        const payload = await response.json()
+        setError(payload?.error ?? 'Credenciales inválidas')
+        return
+      }
+
+      await refresh()
+      router.push('/dashboard')
+    } catch (err) {
+      console.error('Login error', err)
+      setError('No fue posible iniciar sesión. Intenta nuevamente')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
@@ -22,19 +65,20 @@ export default function LoginPage() {
           <div>
             <CardTitle className="text-2xl font-bold text-gray-900">Bienvenido a UMB</CardTitle>
             <CardDescription className="text-lg text-red-600 font-semibold">
-              Préstamo de Salones
+              Gestión de préstamos de salones
             </CardDescription>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Correo Electrónico</Label>
+              <Label htmlFor="email">Correo electrónico</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
+                required
                 className="h-12"
               />
             </div>
@@ -44,45 +88,35 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
+                required
                 className="h-12"
               />
             </div>
-          </div>
-          
-          <Link href="/dashboard">
-            <Button className="w-full h-12 bg-red-600 hover:bg-red-700">
-              Iniciar Sesión
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            <Button type="submit" className="w-full h-12 bg-red-600 hover:bg-red-700" disabled={submitting}>
+              {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </Button>
-          </Link>
-          
+          </form>
+
           <div className="text-center">
             <Link href="/forgot-password" className="text-sm text-red-600 hover:underline">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
-          
+
           <div className="text-center">
             <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
             <Link href="/register" className="text-sm text-red-600 hover:underline">
-              Regístrate
+              Regístrate como profesor
             </Link>
           </div>
-          
+
           <div className="relative">
             <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-white px-2 text-sm text-gray-500">O continúa con</span>
+              <span className="bg-white px-2 text-sm text-gray-500">Acceso solo para miembros UMB</span>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-12">
-              Google
-            </Button>
-            <Button variant="outline" className="h-12">
-              Microsoft
-            </Button>
           </div>
         </CardContent>
       </Card>

@@ -1,14 +1,53 @@
 "use client"
 
-import { ArrowLeft, X, Settings, Trash2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ArrowLeft, CheckCircle2, Info, XCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useAuthGuard } from '@/hooks/useAuthGuard'
+import type { Reservation } from '@/lib/types'
 
 export default function NotificationsPage() {
+  const { user, loading } = useAuthGuard(['ADMIN', 'TEACHER'])
+  const [reservations, setReservations] = useState<Reservation[]>([])
+  const [loadingData, setLoadingData] = useState(true)
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      try {
+        setLoadingData(true)
+        const response = await fetch('/api/reservations', { credentials: 'include' })
+        if (!response.ok) {
+          return
+        }
+        const payload = await response.json()
+        setReservations(payload?.data ?? [])
+      } catch (err) {
+        console.error('Notifications load error', err)
+      } finally {
+        setLoadingData(false)
+      }
+    }
+
+    if (!loading && user) {
+      loadNotifications()
+    }
+  }, [loading, user])
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Skeleton className="h-48 w-48" />
+      </div>
+    )
+  }
+
+  const notifications = reservations.filter((reservation) => reservation.status !== 'PENDING')
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-red-600 text-white p-4">
         <div className="flex items-center justify-between">
           <Link href="/dashboard">
@@ -17,111 +56,58 @@ export default function NotificationsPage() {
             </Button>
           </Link>
           <h1 className="text-xl font-bold">Notificaciones</h1>
-          <Button variant="ghost" size="icon" className="text-white hover:bg-red-700">
-            <Settings className="h-5 w-5" />
-          </Button>
+          <div className="w-10" />
         </div>
       </header>
 
-      {/* Action Buttons */}
-      <div className="p-4 bg-white border-b">
-        <div className="flex justify-between">
-          <Button variant="outline" size="sm">
-            <Trash2 className="h-4 w-4 mr-2" />
-            Borrar Todo
-          </Button>
-          <Button variant="outline" size="sm">
-            Ver Historial
-          </Button>
-        </div>
-      </div>
-
-      {/* Main Content */}
       <main className="p-4 space-y-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <p className="text-sm">
-                  Tu reserva del Salón 301 para el 15 de marzo a las 10:00 AM ha sido confirmada.
-                </p>
-                <p className="text-xs text-gray-500 mt-2">Hace 2 horas</p>
-              </div>
-              <div className="w-3 h-3 bg-green-500 rounded-full ml-2 mt-1"></div>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                Marcar leído
-              </Button>
-              <Button variant="ghost" size="sm" className="text-red-600">
-                Eliminar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <p className="text-sm">
-                  Tu solicitud para el Salón 202 fue rechazada. Razón: Conflicto de horario.
-                </p>
-                <p className="text-xs text-gray-500 mt-2">Hace 3 horas</p>
-              </div>
-              <div className="w-3 h-3 bg-red-500 rounded-full ml-2 mt-1"></div>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                Marcar leído
-              </Button>
-              <Button variant="ghost" size="sm" className="text-red-600">
-                Eliminar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <p className="text-sm">
-                  Tienes una reserva programada mañana en el Salón 105 a las 3:00 PM.
-                </p>
-                <p className="text-xs text-gray-500 mt-2">Hace 5 horas</p>
-              </div>
-              <div className="w-3 h-3 bg-blue-500 rounded-full ml-2 mt-1"></div>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="ghost" size="sm" className="text-red-600">
-                Eliminar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <p className="text-sm">
-                  Mantenimiento en el Bloque A el 20 de marzo. Algunos salones estarán cerrados.
-                </p>
-                <p className="text-xs text-gray-500 mt-2">Hace 6 horas</p>
-              </div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full ml-2 mt-1"></div>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                Marcar leído
-              </Button>
-              <Button variant="ghost" size="sm" className="text-red-600">
-                Eliminar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {loadingData ? (
+          <Skeleton className="h-32 w-full" />
+        ) : notifications.length === 0 ? (
+          <Card>
+            <CardContent className="p-6 text-center text-gray-600">
+              Aún no tienes novedades sobre tus reservas.
+            </CardContent>
+          </Card>
+        ) : (
+          notifications.map((reservation) => {
+            const isApproved = reservation.status === 'APPROVED'
+            const isRejected = reservation.status === 'REJECTED'
+            return (
+              <Card key={reservation.id} className={isApproved ? 'border-green-200 bg-green-50' : isRejected ? 'border-red-200 bg-red-50' : 'border-gray-200'}>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-base font-semibold text-gray-900 flex items-center gap-2">
+                    {isApproved ? (
+                      <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    ) : isRejected ? (
+                      <XCircle className="h-5 w-5 text-red-600" />
+                    ) : (
+                      <Info className="h-5 w-5 text-blue-600" />
+                    )}
+                    {reservation.roomName}
+                  </CardTitle>
+                  <span className="text-xs text-gray-500">
+                    {new Date(reservation.updatedAt ?? reservation.createdAt).toLocaleString('es-CO', {
+                      dateStyle: 'short',
+                      timeStyle: 'short',
+                    })}
+                  </span>
+                </CardHeader>
+                <CardContent className="text-sm text-gray-700 space-y-2">
+                  <p>
+                    Estado actualizado a <strong>{reservation.status}</strong>.
+                  </p>
+                  {reservation.approvedByName && (
+                    <p>
+                      Gestor: <span className="font-medium">{reservation.approvedByName}</span>
+                    </p>
+                  )}
+                  {reservation.notes && <p className="text-gray-600">Observaciones: {reservation.notes}</p>}
+                </CardContent>
+              </Card>
+            )
+          })
+        )}
       </main>
     </div>
   )
