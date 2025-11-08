@@ -1,106 +1,126 @@
 "use client"
 
-import { ArrowLeft, User, Settings, LogOut } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
+import { useEffect, useState } from 'react'
+import { LogOut, Save } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from '@/components/auth-provider'
+import { useAuthGuard } from '@/hooks/useAuthGuard'
 
 export default function ProfilePage() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-red-600 text-white p-4">
-        <div className="flex items-center justify-between">
-          <Link href="/dashboard">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-red-700">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="text-xl font-bold">Perfil</h1>
-          <Button variant="ghost" size="icon" className="text-white hover:bg-red-700">
-            <Settings className="h-5 w-5" />
-          </Button>
-        </div>
-      </header>
+  const { user, loading } = useAuthGuard()
+  const { logout, refresh } = useAuth()
+  const [fullName, setFullName] = useState('')
+  const [department, setDepartment] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-      {/* Main Content */}
-      <main className="p-4 space-y-6">
+  useEffect(() => {
+    if (user) {
+      setFullName(user.fullName)
+      setDepartment(user.department ?? '')
+    }
+  }, [user])
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSaving(true)
+    setError(null)
+    setMessage(null)
+
+    try {
+      const response = await fetch('/api/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ fullName, department }),
+      })
+
+      const payload = await response.json()
+      if (!response.ok) {
+        setError(payload?.error ?? 'No fue posible actualizar el perfil')
+        return
+      }
+
+      setMessage('Información actualizada correctamente')
+      await refresh()
+    } catch (err) {
+      console.error('Profile update error', err)
+      setError('Ocurrió un error al guardar los cambios')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Skeleton className="h-48 w-48" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-10 px-4">
+      <div className="mx-auto max-w-3xl space-y-6">
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <Avatar className="w-16 h-16">
-                <AvatarImage src="/placeholder-user.jpg" alt="Usuario" />
-                <AvatarFallback>US</AvatarFallback>
-              </Avatar>
-              <div>
-                <h2 className="text-xl font-semibold">Usuario Academia</h2>
-                <p className="text-gray-600">usuario@academia.umb.edu.co</p>
-                <p className="text-sm text-gray-500">Profesor</p>
+          <CardHeader>
+            <CardTitle className="text-xl">Perfil personal</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Nombre completo</Label>
+                <Input id="fullName" value={fullName} onChange={(event) => setFullName(event.target.value)} required />
               </div>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Correo institucional</Label>
+                <Input id="email" value={user.email} readOnly className="bg-gray-100" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="department">Facultad / Departamento</Label>
+                <Input
+                  id="department"
+                  value={department}
+                  onChange={(event) => setDepartment(event.target.value)}
+                  placeholder="Facultad de Ingeniería"
+                />
+              </div>
+              {message && <p className="text-sm text-green-600">{message}</p>}
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <Button type="submit" className="w-full md:w-auto bg-red-600 hover:bg-red-700" disabled={saving}>
+                {saving ? (
+                  <span className="flex items-center gap-2">
+                    <Save className="h-4 w-4 animate-pulse" /> Guardando...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Save className="h-4 w-4" /> Guardar cambios
+                  </span>
+                )}
+              </Button>
+            </form>
           </CardContent>
         </Card>
 
-        <div className="space-y-3">
-          <Card>
-            <CardContent className="p-4">
-              <Link href="/my-reservations" className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <span>Mis Reservas</span>
-                </div>
-                <span className="text-gray-400">→</span>
-              </Link>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <Link href="/notifications" className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <Settings className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span>Configuración</span>
-                </div>
-                <span className="text-gray-400">→</span>
-              </Link>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <Link href="/" className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                    <LogOut className="h-5 w-5 text-red-600" />
-                  </div>
-                  <span className="text-red-600">Cerrar Sesión</span>
-                </div>
-                <span className="text-gray-400">→</span>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-3 h-16">
-          <Link href="/dashboard" className="flex items-center justify-center text-gray-400">
-            <div className="w-6 h-6 bg-gray-400 rounded"></div>
-          </Link>
-          <Link href="/my-reservations" className="flex items-center justify-center text-gray-400">
-            <div className="w-6 h-6 bg-gray-400 rounded"></div>
-          </Link>
-          <Link href="/profile" className="flex items-center justify-center text-red-600">
-            <div className="w-6 h-6 bg-red-600 rounded"></div>
-          </Link>
-        </div>
-      </nav>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Sesión</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-gray-600">
+              Rol actual: <span className="font-semibold text-gray-900">{user.role}</span>
+            </p>
+            <Button variant="outline" className="w-full md:w-auto" onClick={logout}>
+              <LogOut className="h-4 w-4 mr-2" /> Cerrar sesión
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
