@@ -13,7 +13,6 @@ Sistema web completo para la gestión y reserva de salones académicos, desarrol
 - [Instalación](#-instalación)
   - [1. Clonar el Repositorio](#1-clonar-el-repositorio)
   - [2. Configurar la Base de Datos](#2-configurar-la-base-de-datos)
-  - [3. Configurar Variables de Entorno](#3-configurar-variables-de-entorno)
   - [4. Instalar Dependencias](#4-instalar-dependencias)
   - [5. Iniciar el Servidor](#5-iniciar-el-servidor)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
@@ -201,78 +200,8 @@ SELECT COUNT(*) as total_materias FROM subjects;
 -- total_materias: 20
 ```
 
-#### 📌 Solución de Problemas en phpMyAdmin
 
-**Error: "No se puede conectar al servidor MySQL"**
-```bash
-Solución:
-1. Verifica que MySQL esté corriendo en XAMPP (luz verde)
-2. Reinicia el servicio MySQL desde el panel de XAMPP
-3. Si persiste, reinicia XAMPP completamente
-```
-
-**Error: "Archivo demasiado grande para importar"**
-```bash
-Solución:
-1. En phpMyAdmin, ve a la pestaña "Importar"
-2. Busca el mensaje: "Tamaño máximo: XXX MB"
-3. Si el archivo es mayor, usa la opción de línea de comandos:
-
-# Abre la terminal de Windows (CMD) o PowerShell
-cd C:\xampp\mysql\bin
-mysql -u root -p gestion_salones < "C:\ruta\al\proyecto\database\schema.sql"
-```
-
-**Error: "La base de datos ya existe"**
-```bash
-Solución:
-1. En phpMyAdmin, selecciona la base de datos "gestion_salones"
-2. Haz clic en "Operaciones" en el menú superior
-3. Desplázate hasta "Eliminar la base de datos (DROP)"
-4. Haz clic en "DROP" y confirma
-5. Vuelve a importar el archivo schema.sql
-```
-
-### 3. Configurar Variables de Entorno
-
-Crea un archivo `.env.local` en la raíz del proyecto:
-
-```bash
-# Copiar el archivo de ejemplo
-cp .env.example .env.local
-```
-
-Edita `.env.local` con tus configuraciones de XAMPP:
-
-```env
-# Base de Datos MySQL (Configuración por defecto de XAMPP)
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_USER=root
-DATABASE_PASSWORD=          # Dejar vacío (XAMPP no tiene contraseña por defecto)
-DATABASE_NAME=gestion_salones
-
-# Aplicación
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NODE_ENV=development
-
-# Seguridad (generar con: openssl rand -base64 32)
-JWT_SECRET=tu_clave_secreta_muy_segura_aqui
-SESSION_SECRET=otra_clave_secreta_diferente
-
-# Email (Opcional - para notificaciones)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=tu_email@gmail.com
-SMTP_PASS=tu_contraseña_app
-```
-
-> ⚠️ **Importante para XAMPP**: La configuración por defecto de MySQL en XAMPP es:
-> - Usuario: `root`
-> - Contraseña: **vacía** (sin contraseña)
-> - Puerto: `3306`
-
-### 4. Instalar Dependencias
+### 3. Instalar Dependencias
 
 ```bash
 # Instalar todos los paquetes necesarios
@@ -281,7 +210,7 @@ pnpm install
 
 Este comando instalará todas las dependencias listadas en `package.json`.
 
-### 5. Iniciar el Servidor
+### 4. Iniciar el Servidor
 
 ```bash
 # Modo desarrollo (con hot-reload)
