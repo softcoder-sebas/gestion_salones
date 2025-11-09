@@ -116,7 +116,10 @@ export default function ProfilePage() {
             <p className="text-sm text-gray-600">
               Rol actual: <span className="font-semibold text-gray-900">{user.role}</span>
             </p>
-            <Button variant="outline" className="w-full md:w-auto" onClick={logout}>
+            <Button
+              className="w-full md:w-auto bg-red-500 text-white hover:bg-red-700 border border-red-500"
+              onClick={logout}
+            >
               <LogOut className="h-4 w-4 mr-2" /> Cerrar sesión
             </Button>
           </CardContent>

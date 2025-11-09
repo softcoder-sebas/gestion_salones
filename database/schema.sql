@@ -94,7 +94,17 @@ INSERT INTO subjects (code, name, description) VALUES
   ('HIS130', 'Historia Contemporánea', 'Análisis de acontecimientos del siglo XX'),
   ('LIT140', 'Literatura Universal', 'Obras representativas de la literatura mundial'),
   ('ADM250', 'Administración de Proyectos', 'Herramientas para planear, ejecutar y controlar proyectos'),
-  ('ING160', 'Inglés Académico', 'Habilidades de lectura y escritura para contextos universitarios')
+  ('ING160', 'Inglés Académico', 'Habilidades de lectura y escritura para contextos universitarios'),
+  ('COM330', 'Comunicación Organizacional', 'Estrategias de comunicación interna y externa'),
+  ('PSI210', 'Psicología Educativa', 'Procesos cognitivos aplicados a la educación'),
+  ('ECO220', 'Economía para Ingenieros', 'Principios económicos aplicados a proyectos de ingeniería'),
+  ('DER115', 'Derecho Informático', 'Marco legal de las tecnologías de la información'),
+  ('SIS320', 'Sistemas Operativos Avanzados', 'Gestión de recursos y virtualización'),
+  ('IA340', 'Inteligencia Artificial Aplicada', 'Modelos de machine learning para resolver problemas reales'),
+  ('SEG310', 'Seguridad Informática', 'Prácticas para proteger infraestructuras tecnológicas'),
+  ('EMP250', 'Emprendimiento Innovador', 'Diseño de modelos de negocio escalables'),
+  ('MED205', 'Metodologías de la Investigación', 'Técnicas para diseñar y ejecutar proyectos de investigación'),
+  ('DIS230', 'Diseño de Experiencia de Usuario', 'Principios de usabilidad y diseño centrado en el usuario')
 ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description);
 
 INSERT INTO rooms (code, name, location, capacity, resources)
@@ -113,7 +123,22 @@ VALUES
   ('M-205', 'Salón de Música', 'Bloque M - Piso 2', 35, 'Instrumentos musicales, Paneles acústicos'),
   ('N-315', 'Laboratorio de Realidad Virtual', 'Bloque N - Piso 3', 20, 'Visores VR, Estaciones de alto rendimiento'),
   ('P-101', 'Sala de Innovación', 'Bloque P - Piso 1', 25, 'Mobiliario modular, Monitores táctiles'),
-  ('Q-402', 'Laboratorio de Biotecnología', 'Bloque Q - Piso 4', 18, 'Cabinas de bioseguridad, Microscopios de alta precisión')
+  ('Q-402', 'Laboratorio de Biotecnología', 'Bloque Q - Piso 4', 18, 'Cabinas de bioseguridad, Microscopios de alta precisión'),
+  ('R-210', 'Laboratorio de Energías Renovables', 'Bloque R - Piso 2', 18, 'Paneles solares didácticos, Turbinas eólicas de demostración'),
+  ('S-118', 'Salón Interactivo', 'Bloque S - Piso 1', 34, 'Pantallas táctiles, Sistema de sonido envolvente'),
+  ('T-330', 'Laboratorio de Data Science', 'Bloque T - Piso 3', 28, 'Workstations con GPU, Servidor de datos'),
+  ('U-215', 'Salón de Innovación Pedagógica', 'Bloque U - Piso 2', 30, 'Mobiliario flexible, Cámaras de seguimiento automático'),
+  ('V-410', 'Laboratorio de Automatización', 'Bloque V - Piso 4', 24, 'Brazos robóticos, PLC Siemens, Sensores industriales'),
+  ('W-105', 'Salón Multimodal', 'Bloque W - Piso 1', 40, 'Iluminación inteligente, Proyección 360°'),
+  ('X-220', 'Laboratorio de Ciberseguridad', 'Bloque X - Piso 2', 20, 'Firewalls de próxima generación, Equipos de monitoreo de red'),
+  ('Y-315', 'Sala de Creatividad Digital', 'Bloque Y - Piso 3', 26, 'Tabletas gráficas, Estudio de grabación'),
+  ('Z-120', 'Salón de Expresión Oral', 'Bloque Z - Piso 1', 22, 'Sistema de grabación, Cabinas de práctica'),
+  ('AA-205', 'Laboratorio de IoT', 'Bloque AA - Piso 2', 24, 'Kits Arduino, Sensores inalámbricos, Plataforma de monitoreo'),
+  ('AB-310', 'Salón de Estrategia Empresarial', 'Bloque AB - Piso 3', 32, 'Módulos de simulación, Pantallas de datos en tiempo real'),
+  ('AC-115', 'Laboratorio de Videojuegos', 'Bloque AC - Piso 1', 20, 'Motores de realidad virtual, Consolas de desarrollo'),
+  ('AD-408', 'Sala de Diseño Arquitectónico', 'Bloque AD - Piso 4', 36, 'Mesas digitalizadoras, Plotter de gran formato'),
+  ('AE-210', 'Laboratorio de Bioinformática', 'Bloque AE - Piso 2', 18, 'Servidores de cómputo, Software de análisis genómico'),
+  ('AF-118', 'Salón de Aprendizaje Colaborativo', 'Bloque AF - Piso 1', 30, 'Pizarras colaborativas, Sistema de videoconferencia 360°')
 ON DUPLICATE KEY UPDATE
   name = VALUES(name),
   location = VALUES(location),
