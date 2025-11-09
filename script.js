@@ -145,30 +145,11 @@ function initApp() {
 // Call init when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);
 
-// Función para modificar reserva con confirmación
-function modificarReserva() {
-    let confirmar = confirm("¿Deseas modificar la reserva?");
-    if (confirmar) {
-        alert("Ahora puedes modificar la reserva");
-    }else {
-        alert("Modificación cancelada");
-    }
+// Función única para gestionar las acciones de reserva sin funcionalidad implementada
+function gestionarAccionReserva(accion) {
+    // Aquí se implementará la lógica para la acción especificada ("editar" o "eliminar")
 }
 
-// Función para cancelar reserva con confirmación
-function cancelarReserva() {
-    let confirmar = confirm("¿Seguro que deseas cancelar la reserva?");
-    if (confirmar) {
-        alert("Reserva cancelada");
-    }else {
-        alert("Procedimiento cancelado");
-    }
-}
-
-//Función para mostrar detalles de la reserva
-function verDetallesReserva() {
-    alert("Aquí puedes ver los detalles de la reserva");
-}
 // Función para mostrar notificaciones
 function borrarNotificaciones() {
     alert("Todas las notificaciones han sido borradas");
