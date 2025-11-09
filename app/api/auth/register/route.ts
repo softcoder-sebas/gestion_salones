@@ -21,16 +21,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json<ApiResponse<User>>({ success: false, error: message }, { status: 400 })
     }
 
-    const existing = await findUserByEmail(parsed.data.email)
+    const fullName = parsed.data.fullName.trim()
+    const email = parsed.data.email.trim().toLowerCase()
+    const department = parsed.data.department?.trim() ?? null
+
+    const existing = await findUserByEmail(email)
     if (existing) {
       return NextResponse.json<ApiResponse<User>>({ success: false, error: 'El correo ya está registrado' }, { status: 409 })
     }
 
     const user = await createUser({
-      fullName: parsed.data.fullName,
-      email: parsed.data.email,
+      fullName,
+      email,
       password: parsed.data.password,
-      department: parsed.data.department ?? null,
+      department,
       role: 'TEACHER',
     })
 
