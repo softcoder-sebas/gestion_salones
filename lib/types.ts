@@ -16,6 +16,14 @@ export interface Subject {
   description: string | null
 }
 
+export interface RoomReservationSummary {
+  id: number
+  teacherName: string
+  subjectName: string | null
+  startTime: string
+  endTime: string
+}
+
 export interface Room {
   id: number
   code: string
@@ -27,6 +35,7 @@ export interface Room {
   defaultTeacherId: number | null
   defaultTeacherName?: string | null
   defaultSubjectName?: string | null
+  currentReservation?: RoomReservationSummary | null
 }
 
 export type ReservationStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'

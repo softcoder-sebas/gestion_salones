@@ -94,7 +94,10 @@ INSERT INTO rooms (code, name, location, capacity, resources)
 VALUES
   ('A-301', 'Salón 301', 'Bloque A - Piso 3', 30, 'Televisor, Sonido, Aire acondicionado'),
   ('B-210', 'Salón 210', 'Bloque B - Piso 2', 45, 'Proyector, Pizarra interactiva'),
-  ('D-405', 'Laboratorio 405', 'Bloque D - Piso 4', 28, 'Computadores Core i7, Switch Cisco, Aire acondicionado')
+  ('D-405', 'Laboratorio 405', 'Bloque D - Piso 4', 28, 'Computadores Core i7, Switch Cisco, Aire acondicionado'),
+  ('C-112', 'Salón 112', 'Bloque C - Piso 1', 36, 'Televisor 4K, Sistema de videoconferencia'),
+  ('E-201', 'Auditorio 201', 'Bloque E - Piso 2', 80, 'Iluminación profesional, Cabina de sonido, Streaming'),
+  ('F-108', 'Laboratorio de Innovación', 'Bloque F - Piso 1', 24, 'Impresoras 3D, Kits de robótica, Cámaras de realidad virtual')
 ON DUPLICATE KEY UPDATE
   name = VALUES(name),
   location = VALUES(location),
