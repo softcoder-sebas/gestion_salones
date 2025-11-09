@@ -8,7 +8,7 @@ interface DBUserRow {
   role: Role
   department: string | null
   created_at: Date
-  password_hash: string
+  password: string
 }
 
 function mapUser(row: DBUserRow): User {
@@ -45,19 +45,19 @@ export async function listTeachers(): Promise<User[]> {
 export async function createUser({
   fullName,
   email,
-  passwordHash,
+  password,
   role,
   department,
 }: {
   fullName: string
   email: string
-  passwordHash: string
+  password: string
   role: Role
   department?: string | null
 }): Promise<User> {
   const result = await execute(
-    'INSERT INTO users (full_name, email, password_hash, role, department) VALUES (?, ?, ?, ?, ?)',
-    [fullName, email, passwordHash, role, department ?? null],
+    'INSERT INTO users (full_name, email, password, role, department) VALUES (?, ?, ?, ?, ?)',
+    [fullName, email, password, role, department ?? null],
   )
 
   const insertId = (result as any).insertId as number
@@ -89,7 +89,7 @@ export async function updateUserProfile(id: number, {
   return updated ? mapUser(updated) : null
 }
 
-export async function getPasswordHash(id: number) {
-  const rows = await query<Pick<DBUserRow, 'password_hash'>>('SELECT password_hash FROM users WHERE id = ?', [id])
-  return rows.length ? rows[0].password_hash : null
+export async function getPassword(id: number) {
+  const rows = await query<Pick<DBUserRow, 'password'>>('SELECT password FROM users WHERE id = ?', [id])
+  return rows.length ? rows[0].password : null
 }

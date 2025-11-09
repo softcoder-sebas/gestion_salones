@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import bcrypt from 'bcryptjs'
 import { createSessionToken, setSessionCookie } from '@/lib/auth'
 import { findUserByEmail } from '@/lib/users'
 import type { ApiResponse, User } from '@/lib/types'
@@ -25,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json<ApiResponse<User>>({ success: false, error: 'Credenciales inválidas' }, { status: 401 })
     }
 
-    const validPassword = await bcrypt.compare(parsed.data.password, userRecord.password_hash)
+    const validPassword = parsed.data.password === userRecord.password
     if (!validPassword) {
       return NextResponse.json<ApiResponse<User>>({ success: false, error: 'Credenciales inválidas' }, { status: 401 })
     }

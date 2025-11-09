@@ -15,7 +15,6 @@ La base de datos incluye los siguientes roles predeterminados para fines de prue
 - **GUEST**
   - Rol reservado para futuras implementaciones con acceso limitado.
 
-> **Nota:** Las contraseñas incluidas en `database/schema.sql` son hashes de ejemplo (bcrypt). Antes de usar las cuentas en producción, actualiza los valores desde phpMyAdmin con contraseñas seguras.
 
 ## Requisitos previos
 
@@ -35,7 +34,7 @@ La base de datos incluye los siguientes roles predeterminados para fines de prue
    - Ejecuta la importación para crear tablas y datos de ejemplo.
 4. **Verificar usuarios y datos**
    - Abre la tabla `users` para confirmar la creación del administrador y los docentes de prueba.
-   - Si necesitas actualizar contraseñas, usa la pestaña *Editar* y reemplaza `password_hash` con un nuevo hash generado desde phpMyAdmin (`PASSWORD_BCRYPT`).
+   - Si necesitas actualizar contraseñas, usa la pestaña *Editar* y modifica el campo `password` con el valor que desees.
 5. **Configurar la conexión desde la aplicación**
    - Copia el archivo `.env.example` a `.env.local` y ajusta las credenciales de la base de datos MySQL según tu entorno XAMPP (por defecto: usuario `root` sin contraseña y host `127.0.0.1`).
 

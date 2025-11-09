@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import bcrypt from 'bcryptjs'
 import { createUser, findUserByEmail } from '@/lib/users'
 import { createSessionToken, setSessionCookie } from '@/lib/auth'
 import type { ApiResponse, User } from '@/lib/types'
@@ -27,11 +26,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json<ApiResponse<User>>({ success: false, error: 'El correo ya está registrado' }, { status: 409 })
     }
 
-    const passwordHash = await bcrypt.hash(parsed.data.password, 10)
     const user = await createUser({
       fullName: parsed.data.fullName,
       email: parsed.data.email,
-      passwordHash,
+      password: parsed.data.password,
       department: parsed.data.department ?? null,
       role: 'TEACHER',
     })
