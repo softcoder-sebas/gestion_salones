@@ -1,28 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { requireUser } from '@/lib/auth';
-import { createReservation, listReservations } from '@/lib/reservations';
-import type { ApiResponse, Reservation, ReservationStatus } from '@/lib/types';
-
-const datetimeLocalSchema = z
-  .string()
-  .min(1, 'La fecha y hora son obligatorias')
-  .refine((value) => !Number.isNaN(new Date(value).getTime()), 'Fecha y hora inválidas')
-
-const reservationSchema = z.object({
-  roomId: z.number().int().positive(),
-  subjectId: z.number().int().positive().optional().nullable(),
-  teacherId: z.number().int().positive().optional(),
-  startTime: datetimeLocalSchema,
-  endTime: datetimeLocalSchema,
-  notes: z.string().max(255).optional().nullable(),
-})
-
-const validStatuses: ReservationStatus[] = ['PENDING', 'APPROVED', 'REJECTED', 'CANCELLED']
-
-function toMySqlDatetime(date: Date) {
-  return date.toISOString().slice(0, 19).replace('T', ' ')
-}
+import { NextRequest, NextResponse } from 'next/server'
+import { requireUser } from '@/lib/auth'
+import { createReservation, listReservations } from '@/lib/reservations'
+import type { ApiResponse, Reservation, ReservationStatus } from '@/lib/types'
+import {
+  reservationBodySchema,
+  toMySqlDatetime,
+  validReservationStatuses,
+} from '@/lib/validation/reservation'
 
 export async function GET(request: NextRequest) {
   const { user, response } = await requireUser(request, ['ADMIN', 'TEACHER'])
@@ -32,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url)
   const statusParam = searchParams.get('status') as ReservationStatus | null
-  const status = statusParam && validStatuses.includes(statusParam) ? statusParam : undefined
+  const status = statusParam && validReservationStatuses.includes(statusParam) ? statusParam : undefined
 
   const reservations = await listReservations({
     teacherId: user.role === 'TEACHER' ? user.id : undefined,
@@ -51,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const parsed = reservationSchema.safeParse(body)
+    const parsed = reservationBodySchema.safeParse(body)
     if (!parsed.success) {
       const message = parsed.error.errors.map((error) => error.message).join(', ')
       return NextResponse.json<ApiResponse<Reservation>>({ success: false, error: message }, { status: 400 })

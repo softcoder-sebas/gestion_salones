@@ -79,6 +79,27 @@ export async function listReservations({
   return rows.map(mapReservation)
 }
 
+export async function getReservationById(reservationId: number): Promise<Reservation | null> {
+  const rows = await query<DBReservationRow>(
+    `SELECT r.*, rm.name AS room_name, u.full_name AS teacher_name,
+            s.name AS subject_name, approver.full_name AS approver_name
+     FROM reservations r
+     INNER JOIN rooms rm ON rm.id = r.room_id
+     INNER JOIN users u ON u.id = r.teacher_id
+     LEFT JOIN subjects s ON s.id = r.subject_id
+     LEFT JOIN users approver ON approver.id = r.approved_by
+     WHERE r.id = ?
+     LIMIT 1`,
+    [reservationId],
+  )
+
+  if (!rows.length) {
+    return null
+  }
+
+  return mapReservation(rows[0])
+}
+
 export async function createReservation({
   roomId,
   teacherId,
@@ -98,6 +119,41 @@ export async function createReservation({
     `INSERT INTO reservations (room_id, teacher_id, subject_id, start_time, end_time, notes)
      VALUES (?, ?, ?, ?, ?, ?)` ,
     [roomId, teacherId, subjectId ?? null, startTime, endTime, notes ?? null],
+  )
+}
+
+export async function updateReservation({
+  reservationId,
+  roomId,
+  subjectId,
+  startTime,
+  endTime,
+  notes,
+  teacherId,
+}: {
+  reservationId: number
+  roomId: number
+  subjectId?: number | null
+  startTime: string
+  endTime: string
+  notes?: string | null
+  teacherId?: number
+}) {
+  const updates = ['room_id = ?', 'subject_id = ?', 'start_time = ?', 'end_time = ?', 'notes = ?']
+  const params: (number | string | null)[] = [roomId, subjectId ?? null, startTime, endTime, notes ?? null]
+
+  if (typeof teacherId === 'number') {
+    updates.push('teacher_id = ?')
+    params.push(teacherId)
+  }
+
+  updates.push('updated_at = CURRENT_TIMESTAMP')
+
+  await execute(
+    `UPDATE reservations
+     SET ${updates.join(', ')}
+     WHERE id = ?`,
+    [...params, reservationId],
   )
 }
 
