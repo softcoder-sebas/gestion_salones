@@ -135,7 +135,7 @@ pnpm --version    # Debe mostrar v8.0.0 o superior
 
 ```bash
 # Clonar el proyecto
-git clone https://github.com/tu-usuario/gestion-salones-umb.git
+git clone https://github.com/softcoder-sebas/gestion_salones
 
 # Acceder al directorio
 cd gestion-salones-umb
