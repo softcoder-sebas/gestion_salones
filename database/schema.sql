@@ -87,7 +87,14 @@ CREATE TABLE IF NOT EXISTS reservation_audit (
 INSERT INTO subjects (code, name, description) VALUES
   ('MAT101', 'Matemáticas Básicas', 'Fundamentos de álgebra y cálculo'),
   ('PRO201', 'Programación II', 'Estructuras de datos y patrones de diseño'),
-  ('ARQ305', 'Arquitectura de Software', 'Modelos avanzados para sistemas empresariales')
+  ('ARQ305', 'Arquitectura de Software', 'Modelos avanzados para sistemas empresariales'),
+  ('FIS210', 'Física Aplicada', 'Conceptos de mecánica y electricidad para ingeniería'),
+  ('QUI220', 'Química General', 'Principios de química orgánica e inorgánica'),
+  ('BIO115', 'Biología Celular', 'Estudio de la estructura y función de la célula'),
+  ('HIS130', 'Historia Contemporánea', 'Análisis de acontecimientos del siglo XX'),
+  ('LIT140', 'Literatura Universal', 'Obras representativas de la literatura mundial'),
+  ('ADM250', 'Administración de Proyectos', 'Herramientas para planear, ejecutar y controlar proyectos'),
+  ('ING160', 'Inglés Académico', 'Habilidades de lectura y escritura para contextos universitarios')
 ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description);
 
 INSERT INTO rooms (code, name, location, capacity, resources)
@@ -97,7 +104,16 @@ VALUES
   ('D-405', 'Laboratorio 405', 'Bloque D - Piso 4', 28, 'Computadores Core i7, Switch Cisco, Aire acondicionado'),
   ('C-112', 'Salón 112', 'Bloque C - Piso 1', 36, 'Televisor 4K, Sistema de videoconferencia'),
   ('E-201', 'Auditorio 201', 'Bloque E - Piso 2', 80, 'Iluminación profesional, Cabina de sonido, Streaming'),
-  ('F-108', 'Laboratorio de Innovación', 'Bloque F - Piso 1', 24, 'Impresoras 3D, Kits de robótica, Cámaras de realidad virtual')
+  ('F-108', 'Laboratorio de Innovación', 'Bloque F - Piso 1', 24, 'Impresoras 3D, Kits de robótica, Cámaras de realidad virtual'),
+  ('G-215', 'Salón Creativo', 'Bloque G - Piso 2', 32, 'Pizarras móviles, Pantalla interactiva'),
+  ('H-120', 'Laboratorio de Electrónica', 'Bloque H - Piso 1', 26, 'Osciloscopios, Kits de circuitos, Herramientas de soldadura'),
+  ('J-305', 'Sala de Conferencias', 'Bloque J - Piso 3', 40, 'Sistema de videoconferencia, Sonido envolvente'),
+  ('K-220', 'Laboratorio de Redes', 'Bloque K - Piso 2', 22, 'Racks de servidores, Equipos de networking Cisco'),
+  ('L-110', 'Aula Magna', 'Bloque L - Piso 1', 120, 'Sistema de audio profesional, Iluminación inteligente'),
+  ('M-205', 'Salón de Música', 'Bloque M - Piso 2', 35, 'Instrumentos musicales, Paneles acústicos'),
+  ('N-315', 'Laboratorio de Realidad Virtual', 'Bloque N - Piso 3', 20, 'Visores VR, Estaciones de alto rendimiento'),
+  ('P-101', 'Sala de Innovación', 'Bloque P - Piso 1', 25, 'Mobiliario modular, Monitores táctiles'),
+  ('Q-402', 'Laboratorio de Biotecnología', 'Bloque Q - Piso 4', 18, 'Cabinas de bioseguridad, Microscopios de alta precisión')
 ON DUPLICATE KEY UPDATE
   name = VALUES(name),
   location = VALUES(location),

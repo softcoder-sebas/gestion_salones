@@ -511,6 +511,28 @@ small {
     /* Borde más oscuro */
 }
 
+/* Botón con borde claro para usar sobre fondos oscuros */
+.btn-outline-light {
+    background: transparent;
+    /* Fondo transparente */
+    color: white;
+    /* Texto blanco */
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    /* Borde blanco translúcido */
+    margin-top: 0;
+    /* Sin margen superior extra */
+    padding: 0.75rem 1.25rem;
+    /* Ajuste de padding */
+}
+
+/* Hover del botón claro */
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.15);
+    /* Fondo blanco translúcido */
+    border-color: rgba(255, 255, 255, 0.9);
+    /* Borde más visible */
+}
+
 /* Botón de éxito */
 .btn-success {
     background: var(--success-color);
@@ -759,6 +781,16 @@ small {
     /* Tamaño de fuente */
     font-weight: 600;
     /* Peso semi-grueso */
+}
+
+/* Contenedor para acciones en el header */
+.header-actions {
+    display: flex;
+    /* Alineación horizontal */
+    align-items: center;
+    /* Centrado vertical */
+    gap: 0.75rem;
+    /* Separación entre elementos */
 }
 
 /* Contenido principal */
