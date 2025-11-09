@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
+import { BottomNavigation } from '@/components/navigation/bottom-navigation'
 import { useAuth } from '@/components/auth-provider'
 import { useAuthGuard } from '@/hooks/useAuthGuard'
 
@@ -65,7 +66,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-50 pb-28 pt-10 px-4">
       <div className="mx-auto max-w-3xl space-y-6">
         <Card>
           <CardHeader>
@@ -121,6 +122,7 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
       </div>
+      <BottomNavigation />
     </div>
   )
 }

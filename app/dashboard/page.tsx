@@ -2,13 +2,15 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Bell, Calendar, CheckCircle2, Clock3, Home, ListChecks, Plus, User } from 'lucide-react'
+import { Bell, Calendar, CheckCircle2, Clock3, Home, ListChecks, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuthGuard } from '@/hooks/useAuthGuard'
 import type { Reservation, Room } from '@/lib/types'
+import { BottomNavigation } from '@/components/navigation/bottom-navigation'
+import { cn } from '@/lib/utils'
 
 const statusStyles: Record<string, string> = {
   APPROVED: 'bg-green-100 text-green-800',
@@ -74,6 +76,29 @@ export default function Dashboard() {
       .slice(0, 5)
   }, [reservations, user?.role])
 
+  const formatReservationWindow = (startTime: string, endTime: string) => {
+    const start = new Date(startTime)
+    const end = new Date(endTime)
+    const sameDay = start.toDateString() === end.toDateString()
+
+    const startLabel = start.toLocaleString('es-CO', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
+
+    if (sameDay) {
+      const endLabel = end.toLocaleTimeString('es-CO', { timeStyle: 'short' })
+      return `${startLabel} - ${endLabel}`
+    }
+
+    const endLabel = end.toLocaleString('es-CO', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
+
+    return `${startLabel} - ${endLabel}`
+  }
+
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -83,7 +108,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-28">
       <header className="bg-red-600 text-white p-4">
         <div className="flex items-center justify-between">
           <div>
@@ -159,25 +184,56 @@ export default function Dashboard() {
             ) : rooms.length === 0 ? (
               <p className="text-sm text-gray-600">No hay salones registrados aún.</p>
             ) : (
-              rooms.map((room) => (
-                <div key={room.id} className="border rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900">{room.name}</h3>
-                    <p className="text-sm text-gray-600">{room.location} • Capacidad {room.capacity} personas</p>
-                    {room.resources && <p className="text-xs text-gray-500 mt-1">{room.resources}</p>}
+              rooms.map((room) => {
+                const isOccupied = Boolean(room.currentReservation)
+                return (
+                  <div key={room.id} className="border rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base font-semibold text-gray-900">{room.name}</h3>
+                        <span
+                          className={cn(
+                            'inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold',
+                            isOccupied ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700',
+                          )}
+                        >
+                          {isOccupied ? 'Ocupado' : 'Disponible'}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">{room.location} • Capacidad {room.capacity} personas</p>
+                      {room.resources && <p className="text-xs text-gray-500">{room.resources}</p>}
+                    </div>
+                    <div className="text-sm text-gray-700 space-y-1 md:text-right">
+                      {room.currentReservation ? (
+                        <>
+                          <p>
+                            Profesor:{' '}
+                            <span className="font-medium">{room.currentReservation.teacherName}</span>
+                          </p>
+                          <p>
+                            Materia:{' '}
+                            <span className="font-medium">{room.currentReservation.subjectName ?? 'Por confirmar'}</span>
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {formatReservationWindow(room.currentReservation.startTime, room.currentReservation.endTime)}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p>
+                            Profesor asignado:{' '}
+                            <span className="font-medium">{room.defaultTeacherName ?? 'Sin asignar'}</span>
+                          </p>
+                          <p>
+                            Materia:{' '}
+                            <span className="font-medium">{room.defaultSubjectName ?? 'Sin asignar'}</span>
+                          </p>
+                        </>
+                      )}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-700">
-                    <p>
-                      Profesor asignado:{' '}
-                      <span className="font-medium">{room.defaultTeacherName ?? 'Sin asignar'}</span>
-                    </p>
-                    <p>
-                      Materia:{' '}
-                      <span className="font-medium">{room.defaultSubjectName ?? 'Sin asignar'}</span>
-                    </p>
-                  </div>
-                </div>
-              ))
+                )
+              })
             )}
           </CardContent>
         </Card>
@@ -243,19 +299,7 @@ export default function Dashboard() {
         )}
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-3 h-16">
-          <Link href="/dashboard" className="flex items-center justify-center text-red-600">
-            <Home className="h-6 w-6" />
-          </Link>
-          <Link href="/my-reservations" className="flex items-center justify-center text-gray-400">
-            <Calendar className="h-6 w-6" />
-          </Link>
-          <Link href="/profile" className="flex items-center justify-center text-gray-400">
-            <User className="h-6 w-6" />
-          </Link>
-        </div>
-      </nav>
+      <BottomNavigation />
     </div>
   )
 }
