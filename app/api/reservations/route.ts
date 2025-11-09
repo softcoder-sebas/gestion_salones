@@ -4,12 +4,17 @@ import { requireUser } from '@/lib/auth';
 import { createReservation, listReservations } from '@/lib/reservations';
 import type { ApiResponse, Reservation, ReservationStatus } from '@/lib/types';
 
+const datetimeLocalSchema = z
+  .string()
+  .min(1, 'La fecha y hora son obligatorias')
+  .refine((value) => !Number.isNaN(new Date(value).getTime()), 'Fecha y hora inválidas')
+
 const reservationSchema = z.object({
   roomId: z.number().int().positive(),
   subjectId: z.number().int().positive().optional().nullable(),
   teacherId: z.number().int().positive().optional(),
-  startTime: z.string().datetime(),
-  endTime: z.string().datetime(),
+  startTime: datetimeLocalSchema,
+  endTime: datetimeLocalSchema,
   notes: z.string().max(255).optional().nullable(),
 })
 
