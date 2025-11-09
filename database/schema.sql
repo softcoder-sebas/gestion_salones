@@ -104,15 +104,15 @@ ON DUPLICATE KEY UPDATE
 -- Example administrator account
 INSERT INTO users (full_name, email, password, role, department)
 VALUES
-  ('Coordinador UMB', 'admin@academia.umb.edu.co', 'admin123', 'ADMIN', 'Coordinación Académica')
+  ('Coordinador UMB', 'admin@academia.umb.edu.co', 'scrypt$1ce5ed190d85d062277bb8250220d1ea$0d64187c13b23b990e4c16ef9ee9bb3ca95d1a566e7b7035b2cfdf06affa51c10852c2509473858846b5ffdafee10f4892c8afe15de52aef141ba9bb970fb15f', 'ADMIN', 'Coordinación Académica')
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), department = VALUES(department), role = 'ADMIN';
 
 INSERT INTO users (full_name, email, password, role, department)
 VALUES
-  ('Profesor de Prueba 1', 'profesor1@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Matemáticas'),
-  ('Profesor de Prueba 2', 'profesor2@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Ingeniería'),
-  ('Profesor de Prueba 3', 'profesor3@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Arquitectura'),
-  ('Profesor de Prueba 4', 'profesor4@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Ciencias Sociales')
+  ('Profesor de Prueba 1', 'profesor1@academia.umb.edu.co', 'scrypt$2cbf88cf38e1bac55edf66084fedd1b5$bf35169af35fd725c01a7f0a996e8bf31e3f6148616dffa119a20c1d2258f54b097ff663f0cea29b6ff875e9699bb9036061e72389866f4db110419642e4dd4d', 'TEACHER', 'Departamento de Matemáticas'),
+  ('Profesor de Prueba 2', 'profesor2@academia.umb.edu.co', 'scrypt$8aedbd6d24047fd9ad0664c4e5db5fbe$7a380a6b9db37ed40b8855b47042c5fb3ffc529967fae7cdc6ef21f71e8412174f3a35f6a40cbb05803a23322b93592a0cacd89cbde02889e7a303f7e8f268d0', 'TEACHER', 'Departamento de Ingeniería'),
+  ('Profesor de Prueba 3', 'profesor3@academia.umb.edu.co', 'scrypt$98b7ca580a0c44eb1e088af18706564f$edadb420a2bd09c03381cecbacd81b74d2c1cd17173172dc348b8b3e4b80ae3278f54e9b656adef5fab04a310c6224c6dae9aa4be2bea51407f231f08e875e2f', 'TEACHER', 'Departamento de Arquitectura'),
+  ('Profesor de Prueba 4', 'profesor4@academia.umb.edu.co', 'scrypt$7647302a25fe18766e58c304ed551c5f$34c591854eb9171c3b55bf927fab20b8c932c51adae219ab8d6bc90867d2018e81103ecd353415b8fb3d3928f3ce1dcebbad984a7e579556344852757c2e5dee', 'TEACHER', 'Departamento de Ciencias Sociales')
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), department = VALUES(department), role = 'TEACHER';
 
 -- Link default teachers/subjects once users exist

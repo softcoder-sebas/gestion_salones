@@ -62,13 +62,18 @@ export async function getSessionUser(request: NextRequest): Promise<User | null>
     return null
   }
 
+  const createdAt =
+    dbUser.created_at instanceof Date
+      ? dbUser.created_at.toISOString()
+      : new Date(dbUser.created_at).toISOString()
+
   return {
     id: dbUser.id,
     fullName: dbUser.full_name,
     email: dbUser.email,
     role: dbUser.role,
     department: dbUser.department,
-    createdAt: dbUser.created_at.toISOString(),
+    createdAt,
   }
 }
 

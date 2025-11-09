@@ -1,4 +1,5 @@
 import { execute, query } from './db'
+import { hashPassword, isPasswordHash } from './passwords'
 import type { Role, User } from './types'
 
 interface DBUserRow {
@@ -7,8 +8,15 @@ interface DBUserRow {
   email: string
   role: Role
   department: string | null
-  created_at: Date
+  created_at: Date | string
   password: string
+}
+
+function toIsoString(value: Date | string): string {
+  if (value instanceof Date) {
+    return value.toISOString()
+  }
+  return new Date(value).toISOString()
 }
 
 function mapUser(row: DBUserRow): User {
@@ -18,12 +26,13 @@ function mapUser(row: DBUserRow): User {
     email: row.email,
     role: row.role,
     department: row.department,
-    createdAt: row.created_at.toISOString(),
+    createdAt: toIsoString(row.created_at),
   }
 }
 
 export async function findUserByEmail(email: string) {
-  const rows = await query<DBUserRow>('SELECT * FROM users WHERE email = ?', [email])
+  const normalizedEmail = email.trim().toLowerCase()
+  const rows = await query<DBUserRow>('SELECT * FROM users WHERE email = ?', [normalizedEmail])
   return rows.length ? rows[0] : null
 }
 
@@ -55,9 +64,13 @@ export async function createUser({
   role: Role
   department?: string | null
 }): Promise<User> {
+  const normalizedFullName = fullName.trim()
+  const normalizedEmail = email.trim().toLowerCase()
+  const normalizedDepartment = department ? department.trim() : null
+  const passwordToStore = isPasswordHash(password) ? password : hashPassword(password)
   const result = await execute(
     'INSERT INTO users (full_name, email, password, role, department) VALUES (?, ?, ?, ?, ?)',
-    [fullName, email, password, role, department ?? null],
+    [normalizedFullName, normalizedEmail, passwordToStore, role, normalizedDepartment],
   )
 
   const insertId = (result as any).insertId as number
