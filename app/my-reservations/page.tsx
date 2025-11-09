@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Bell, Calendar, Loader2, Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ArrowLeft, Bell, Calendar, Loader2, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -20,6 +21,7 @@ const statusLabel: Record<string, { label: string; className: string }> = {
 
 export default function MyReservationsPage() {
   const { user, loading } = useAuthGuard(['ADMIN', 'TEACHER'])
+  const router = useRouter()
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loadingData, setLoadingData] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -70,6 +72,10 @@ export default function MyReservationsPage() {
     } finally {
       setCancellingId(null)
     }
+  }
+
+  const handleEdit = (reservationId: number) => {
+    router.push(`/reserve?reservationId=${reservationId}`)
   }
 
   if (loading || !user) {
@@ -139,22 +145,34 @@ export default function MyReservationsPage() {
                   <p className="text-xs text-green-700">Aprobado por {reservation.approvedByName}</p>
                 )}
                 {showCancelButton && reservation.status === 'PENDING' && (
-                  <Button
-                    variant="destructive"
-                    className="w-full md:w-auto"
-                    onClick={() => handleCancel(reservation.id)}
-                    disabled={cancellingId === reservation.id}
-                  >
-                    {cancellingId === reservation.id ? (
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                      onClick={() => handleEdit(reservation.id)}
+                    >
                       <span className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" /> Cancelando...
+                        <Pencil className="h-4 w-4" /> Editar
                       </span>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <Trash2 className="h-4 w-4" /> Cancelar
-                      </span>
-                    )}
-                  </Button>
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      className="w-full sm:w-auto"
+                      onClick={() => handleCancel(reservation.id)}
+                      disabled={cancellingId === reservation.id}
+                    >
+                      {cancellingId === reservation.id ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" /> Cancelando...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Trash2 className="h-4 w-4" /> Cancelar
+                        </span>
+                      )}
+                    </Button>
+                  </div>
                 )}
               </CardContent>
             </Card>

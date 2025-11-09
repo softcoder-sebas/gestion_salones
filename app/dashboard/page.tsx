@@ -20,6 +20,13 @@ const statusStyles: Record<string, string> = {
   CANCELLED: 'bg-gray-200 text-gray-600',
 }
 
+const statusLabels: Record<string, string> = {
+  APPROVED: 'Aprobada',
+  PENDING: 'Pendiente',
+  REJECTED: 'Rechazada',
+  CANCELLED: 'Cancelada',
+}
+
 export default function Dashboard() {
   const { user, loading } = useAuthGuard()
   const { logout } = useAuth()
@@ -69,11 +76,19 @@ export default function Dashboard() {
   }, [user, loading])
 
   const upcomingReservations = useMemo(() => {
+    const allowedStatuses = new Set(['PENDING', 'APPROVED'])
+    const now = new Date()
+
+    const filtered = reservations.filter((reservation) => allowedStatuses.has(reservation.status))
+
     if (user?.role === 'ADMIN') {
-      return reservations.filter((reservation) => reservation.status === 'PENDING').slice(0, 5)
+      return filtered
+        .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+        .slice(0, 5)
     }
-    return reservations
-      .filter((reservation) => new Date(reservation.startTime) >= new Date())
+
+    return filtered
+      .filter((reservation) => new Date(reservation.startTime) >= now)
       .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
       .slice(0, 5)
   }, [reservations, user?.role])
@@ -275,7 +290,9 @@ export default function Dashboard() {
                       {reservation.subjectName && <p className="text-xs text-gray-500">Materia: {reservation.subjectName}</p>}
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge className={statusStyles[reservation.status] ?? 'bg-gray-200 text-gray-700'}>{reservation.status}</Badge>
+                      <Badge className={statusStyles[reservation.status] ?? 'bg-gray-200 text-gray-700'}>
+                        {statusLabels[reservation.status] ?? reservation.status}
+                      </Badge>
                       <Clock3 className="h-4 w-4 text-gray-500" />
                     </div>
                   </div>

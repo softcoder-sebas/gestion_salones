@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, Calendar as CalendarIcon, Check, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,10 +10,11 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuthGuard } from '@/hooks/useAuthGuard'
-import type { ReservationStatus, Room, Subject, User } from '@/lib/types'
+import type { Reservation, ReservationStatus, Room, Subject, User } from '@/lib/types'
 
 export default function ReservePage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { user, loading } = useAuthGuard(['ADMIN', 'TEACHER'])
   const [rooms, setRooms] = useState<Room[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -24,8 +25,20 @@ export default function ReservePage() {
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const [notes, setNotes] = useState('')
+  const [reservationId, setReservationId] = useState<number | null>(null)
+  const [loadingReservation, setLoadingReservation] = useState(false)
   const [statusMessage, setStatusMessage] = useState<{ type: ReservationStatus | 'INFO'; message: string } | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const reservationIdParam = searchParams.get('reservationId')
+
+  const formatDateTimeForInput = (value: string) => {
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) {
+      return ''
+    }
+    const timezoneOffset = date.getTimezoneOffset() * 60000
+    return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, 16)
+  }
 
   useEffect(() => {
     const loadFormData = async () => {
@@ -63,6 +76,81 @@ export default function ReservePage() {
     }
   }, [loading, user])
 
+  useEffect(() => {
+    if (!user || loading) {
+      return
+    }
+
+    if (!reservationIdParam) {
+      setReservationId(null)
+      setLoadingReservation(false)
+      setRoomId('')
+      setSubjectId('')
+      setTeacherId('')
+      setStartTime('')
+      setEndTime('')
+      setNotes('')
+      setStatusMessage(null)
+      return
+    }
+
+    const parsedId = Number(reservationIdParam)
+    if (Number.isNaN(parsedId)) {
+      setStatusMessage({ type: 'REJECTED', message: 'La reserva seleccionada no es válida.' })
+      setReservationId(null)
+      setLoadingReservation(false)
+      return
+    }
+
+    setReservationId(parsedId)
+    setLoadingReservation(true)
+    setStatusMessage(null)
+
+    const loadReservation = async () => {
+      try {
+        const response = await fetch(`/api/reservations/${parsedId}`, { credentials: 'include' })
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null)
+          setStatusMessage({
+            type: 'REJECTED',
+            message: payload?.error ?? 'No fue posible cargar la reserva seleccionada.',
+          })
+          setReservationId(null)
+          router.push('/my-reservations')
+          return
+        }
+
+        const payload = await response.json()
+        const data: Reservation | undefined = payload?.data
+        if (!data) {
+          setStatusMessage({ type: 'REJECTED', message: 'No fue posible cargar la reserva seleccionada.' })
+          setReservationId(null)
+          router.push('/my-reservations')
+          return
+        }
+
+        setRoomId(String(data.roomId))
+        setSubjectId(data.subjectId ? String(data.subjectId) : '')
+        if (user.role === 'ADMIN') {
+          setTeacherId(String(data.teacherId))
+        }
+        setStartTime(formatDateTimeForInput(data.startTime))
+        setEndTime(formatDateTimeForInput(data.endTime))
+        setNotes(data.notes ?? '')
+      } catch (error) {
+        console.error('Load reservation error', error)
+        setStatusMessage({ type: 'REJECTED', message: 'Ocurrió un error al cargar la reserva.' })
+        setReservationId(null)
+        router.push('/my-reservations')
+      } finally {
+        setLoadingReservation(false)
+      }
+    }
+
+    loadReservation()
+  }, [loading, reservationIdParam, router, user])
+
+  const isEditing = Boolean(reservationId)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!user) {
@@ -72,8 +160,8 @@ export default function ReservePage() {
     setStatusMessage(null)
 
     try {
-      const response = await fetch('/api/reservations', {
-        method: 'POST',
+      const response = await fetch(isEditing ? `/api/reservations/${reservationId}` : '/api/reservations', {
+        method: isEditing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
@@ -88,18 +176,26 @@ export default function ReservePage() {
 
       const payload = await response.json()
       if (!response.ok) {
-        setStatusMessage({ type: 'REJECTED', message: payload?.error ?? 'No fue posible registrar la reserva' })
+        const defaultErrorMessage = isEditing
+          ? 'No fue posible actualizar la reserva'
+          : 'No fue posible registrar la reserva'
+        setStatusMessage({ type: 'REJECTED', message: payload?.error ?? defaultErrorMessage })
         return
       }
 
-      setStatusMessage({ type: 'APPROVED', message: 'Solicitud enviada. Recibirás la confirmación por correo institucional.' })
-      setRoomId('')
-      setSubjectId('')
-      setTeacherId('')
-      setStartTime('')
-      setEndTime('')
-      setNotes('')
-      router.push('/my-reservations')
+      if (isEditing) {
+        setStatusMessage({ type: 'APPROVED', message: 'Reserva actualizada correctamente.' })
+        router.push('/my-reservations')
+      } else {
+        setStatusMessage({ type: 'APPROVED', message: 'Solicitud enviada. Recibirás la confirmación por correo institucional.' })
+        setRoomId('')
+        setSubjectId('')
+        setTeacherId('')
+        setStartTime('')
+        setEndTime('')
+        setNotes('')
+        router.push('/my-reservations')
+      }
     } catch (err) {
       console.error('Reserve submit error', err)
       setStatusMessage({ type: 'REJECTED', message: 'Ocurrió un error. Intenta nuevamente.' })
@@ -112,6 +208,8 @@ export default function ReservePage() {
     return null
   }
 
+  const isBusy = submitting || loadingReservation
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-red-600 text-white p-4">
@@ -121,7 +219,7 @@ export default function ReservePage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold">Reservar salón</h1>
+          <h1 className="text-xl font-bold">{isEditing ? 'Editar reserva' : 'Reservar salón'}</h1>
           <div className="w-10" />
         </div>
       </header>
@@ -143,6 +241,7 @@ export default function ReservePage() {
                     value={roomId}
                     onChange={(event) => setRoomId(event.target.value)}
                     required
+                    disabled={isBusy}
                     className="h-12 w-full rounded-md border border-gray-300 px-3 text-sm"
                   >
                     <option value="" disabled>
@@ -163,6 +262,7 @@ export default function ReservePage() {
                     value={subjectId}
                     onChange={(event) => setSubjectId(event.target.value)}
                     className="h-12 w-full rounded-md border border-gray-300 px-3 text-sm"
+                    disabled={isBusy}
                   >
                     <option value="">Sin asignar</option>
                     {subjects.map((subject) => (
@@ -181,6 +281,7 @@ export default function ReservePage() {
                       value={teacherId}
                       onChange={(event) => setTeacherId(event.target.value)}
                       className="h-12 w-full rounded-md border border-gray-300 px-3 text-sm"
+                      disabled={isBusy}
                     >
                       <option value="">Selecciona un profesor (opcional)</option>
                       {teachers.map((teacher) => (
@@ -200,11 +301,19 @@ export default function ReservePage() {
                     value={startTime}
                     onChange={(event) => setStartTime(event.target.value)}
                     required
+                    disabled={isBusy}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="end">Fecha y hora de finalización</Label>
-                  <Input id="end" type="datetime-local" value={endTime} onChange={(event) => setEndTime(event.target.value)} required />
+                  <Input
+                    id="end"
+                    type="datetime-local"
+                    value={endTime}
+                    onChange={(event) => setEndTime(event.target.value)}
+                    required
+                    disabled={isBusy}
+                  />
                 </div>
               </div>
 
@@ -216,6 +325,7 @@ export default function ReservePage() {
                   onChange={(event) => setNotes(event.target.value)}
                   placeholder="Ej. Clase magistral de Ingeniería de Software"
                   maxLength={200}
+                  disabled={isBusy}
                 />
               </div>
 
@@ -224,7 +334,9 @@ export default function ReservePage() {
                   className={`rounded-md border px-4 py-3 text-sm ${
                     statusMessage.type === 'APPROVED'
                       ? 'border-green-200 bg-green-50 text-green-700'
-                      : 'border-red-200 bg-red-50 text-red-700'
+                      : statusMessage.type === 'INFO'
+                        ? 'border-blue-200 bg-blue-50 text-blue-700'
+                        : 'border-red-200 bg-red-50 text-red-700'
                   }`}
                 >
                   {statusMessage.type === 'APPROVED' ? <Check className="mr-2 inline h-4 w-4" /> : null}
@@ -232,13 +344,17 @@ export default function ReservePage() {
                 </div>
               )}
 
-              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={submitting}>
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={isBusy}>
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" /> Guardando
+                    <Loader2 className="h-4 w-4 animate-spin" /> {isEditing ? 'Guardando cambios' : 'Guardando'}
+                  </span>
+                ) : loadingReservation ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Cargando
                   </span>
                 ) : (
-                  'Confirmar reserva'
+                  (isEditing ? 'Guardar cambios' : 'Confirmar reserva')
                 )}
               </Button>
             </form>
