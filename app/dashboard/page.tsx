@@ -124,9 +124,8 @@ export default function Dashboard() {
               </Button>
             </Link>
             <Button
-              variant="outline"
               size="sm"
-              className="border-white text-white hover:bg-red-700 hover:text-white"
+              className="bg-red-500 text-white border border-white/30 hover:bg-red-700 hover:text-white"
               onClick={logout}
             >
               <LogOut className="mr-2 h-4 w-4" /> Cerrar sesión
