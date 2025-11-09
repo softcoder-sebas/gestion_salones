@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import { BottomNavigation } from '@/components/navigation/bottom-navigation'
 import { useAuthGuard } from '@/hooks/useAuthGuard'
 import type { Reservation } from '@/lib/types'
 
@@ -82,7 +83,7 @@ export default function MyReservationsPage() {
   const showCancelButton = user.role === 'TEACHER'
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <header className="bg-red-600 text-white p-4">
         <div className="flex items-center justify-between">
           <Link href="/dashboard">
@@ -160,6 +161,8 @@ export default function MyReservationsPage() {
           ))
         )}
       </main>
+
+      <BottomNavigation />
     </div>
   )
 }

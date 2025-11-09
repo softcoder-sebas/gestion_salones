@@ -2,12 +2,13 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Bell, Calendar, CheckCircle2, Clock3, Home, ListChecks, Plus } from 'lucide-react'
+import { Bell, Calendar, CheckCircle2, Clock3, Home, ListChecks, LogOut, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuthGuard } from '@/hooks/useAuthGuard'
+import { useAuth } from '@/components/auth-provider'
 import type { Reservation, Room } from '@/lib/types'
 import { BottomNavigation } from '@/components/navigation/bottom-navigation'
 import { cn } from '@/lib/utils'
@@ -21,6 +22,7 @@ const statusStyles: Record<string, string> = {
 
 export default function Dashboard() {
   const { user, loading } = useAuthGuard()
+  const { logout } = useAuth()
   const [rooms, setRooms] = useState<Room[]>([])
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loadingData, setLoadingData] = useState(true)
@@ -115,11 +117,21 @@ export default function Dashboard() {
             <h1 className="text-xl font-bold">Hola, {user.fullName.split(' ')[0]}</h1>
             <p className="text-sm text-red-100">Rol: {user.role === 'ADMIN' ? 'Administrador' : user.role === 'TEACHER' ? 'Profesor' : 'Invitado'}</p>
           </div>
-          <Link href="/notifications">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-red-700">
-              <Bell className="h-5 w-5" />
+          <div className="flex items-center gap-2">
+            <Link href="/notifications">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-red-700">
+                <Bell className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-white text-white hover:bg-red-700 hover:text-white"
+              onClick={logout}
+            >
+              <LogOut className="mr-2 h-4 w-4" /> Cerrar sesión
             </Button>
-          </Link>
+          </div>
         </div>
       </header>
 
