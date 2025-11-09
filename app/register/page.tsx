@@ -87,7 +87,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
-                placeholder="profesor@umb.edu.co"
+                placeholder="profesor@academia.umb.edu.co"
               />
             </div>
             <div className="space-y-2">

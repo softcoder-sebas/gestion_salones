@@ -665,8 +665,7 @@ small {
     /* Margen vertical */
 }
 
-/* Enlace de contraseña olvidada */
-.forgot-password,
+/* Enlace para volver al inicio de sesión */
 .back-to-login {
     color: var(--primary-color);
     /* Color primario */
@@ -682,8 +681,7 @@ small {
     /* Espacio entre elementos */
 }
 
-/* Hover en enlaces de login */
-.forgot-password:hover,
+/* Hover en enlace de inicio de sesión */
 .back-to-login:hover {
     text-decoration: underline;
     /* Subrayado en hover */
