@@ -9,13 +9,17 @@ const statusSchema = z.object({
   notes: z.string().max(255).optional().nullable(),
 })
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { user, response } = await requireUser(request, ['ADMIN'])
   if (!user) {
     return response
   }
 
   try {
+    const { id } = await params
     const body = await request.json()
     const parsed = statusSchema.safeParse(body)
     if (!parsed.success) {
@@ -24,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     await updateReservationStatus({
-      reservationId: Number(params.id),
+      reservationId: Number(id),
       status: parsed.data.status as ReservationStatus,
       approverId: user.id,
       notes: parsed.data.notes ?? null,
