@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(120) NOT NULL,
   email VARCHAR(191) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   role ENUM('ADMIN', 'TEACHER', 'GUEST') NOT NULL DEFAULT 'GUEST',
   department VARCHAR(120) NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -101,18 +101,18 @@ ON DUPLICATE KEY UPDATE
   capacity = VALUES(capacity),
   resources = VALUES(resources);
 
--- Example administrator account (update password_hash with bcrypt via phpMyAdmin before using in production)
-INSERT INTO users (full_name, email, password_hash, role, department)
+-- Example administrator account
+INSERT INTO users (full_name, email, password, role, department)
 VALUES
-  ('Coordinador UMB', 'admin@academia.umb.edu.co', '$2b$10$vrYhqQ0qkjSpz9bQ8XcAe.K1m9f7oOJPfm6.H/Ejko.gIhVQbKX9i', 'ADMIN', 'Coordinación Académica')
+  ('Coordinador UMB', 'admin@academia.umb.edu.co', 'admin123', 'ADMIN', 'Coordinación Académica')
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), department = VALUES(department), role = 'ADMIN';
 
-INSERT INTO users (full_name, email, password_hash, role, department)
+INSERT INTO users (full_name, email, password, role, department)
 VALUES
-  ('Profesor de Prueba 1', 'profesor1@academia.umb.edu.co', '$2b$10$vrYhqQ0qkjSpz9bQ8XcAe.K1m9f7oOJPfm6.H/Ejko.gIhVQbKX9i', 'TEACHER', 'Departamento de Matemáticas'),
-  ('Profesor de Prueba 2', 'profesor2@academia.umb.edu.co', '$2b$10$vrYhqQ0qkjSpz9bQ8XcAe.K1m9f7oOJPfm6.H/Ejko.gIhVQbKX9i', 'TEACHER', 'Departamento de Ingeniería'),
-  ('Profesor de Prueba 3', 'profesor3@academia.umb.edu.co', '$2b$10$vrYhqQ0qkjSpz9bQ8XcAe.K1m9f7oOJPfm6.H/Ejko.gIhVQbKX9i', 'TEACHER', 'Departamento de Arquitectura'),
-  ('Profesor de Prueba 4', 'profesor4@academia.umb.edu.co', '$2b$10$vrYhqQ0qkjSpz9bQ8XcAe.K1m9f7oOJPfm6.H/Ejko.gIhVQbKX9i', 'TEACHER', 'Departamento de Ciencias Sociales')
+  ('Profesor de Prueba 1', 'profesor1@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Matemáticas'),
+  ('Profesor de Prueba 2', 'profesor2@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Ingeniería'),
+  ('Profesor de Prueba 3', 'profesor3@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Arquitectura'),
+  ('Profesor de Prueba 4', 'profesor4@academia.umb.edu.co', 'profesor123', 'TEACHER', 'Departamento de Ciencias Sociales')
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), department = VALUES(department), role = 'TEACHER';
 
 -- Link default teachers/subjects once users exist
